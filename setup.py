@@ -1,24 +1,76 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
+from codecs import open
+from os import path
 
-def read(fnam):
-    """ Utility function for README file."""
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+here = path.abspath(path.dirname(__file__))
+
+# Get the long description from the README file
+with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
+
 
 setup(
-  name = 'dtit',
-  packages = ['.'], # this must be the same as the name above
-  version = '1.0',
-  description = 'A decision-tree based conditional independence test',
-  author = 'Krzysztof Chalupka',
-  author_email = 'kjchalup@caltech.edu',
-  license='MIT',
-  install_requires=[
-      'numpy>=1.12.1',
-      'sklearn>=0.0',
-      'scipy>=0.19.0'],
-  url = 'https://github.com/kjchalup/dtit',
-  download_url = 'https://github.com/kjchalup/dtit/archive/1.0tar.gz',
-  keywords = ['graphical models', 'statistics',
-      'machine learning', 'decision tree']
+    name='dtit',
+
+    # Versions should comply with PEP440.  For a discussion on single-sourcing
+    # the version across setup.py and the project code, see
+    # https://packaging.python.org/en/latest/single_source_version.html
+    version='1.0.0',
+
+    description='A decision-tree based conditional independence test',
+    long_description=long_description,
+
+    # The project's main homepage.
+      url = 'https://github.com/kjchalup/dtit',
+
+    # Author details
+    author = 'Krzysztof Chalupka',
+    author_email = 'kjchalup@caltech.edu',
+
+    # Choose your license
+    license='MIT',
+
+    # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        'Development Status :: 3 - Alpha',
+
+        # Indicate who your project is intended for
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+
+
+        # Pick your license as you wish (should match "license" above)
+        'License :: OSI Approved :: MIT License',
+
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+    ],
+
+    # What does your project relate to?
+    keywords='machine learning statistics decision trees',
+
+    # You can just specify the packages manually here if your project is
+    # simple. Or you can use find_packages().
+    packages=find_packages(exclude=['contrib', 'docs', 'tests']),
+
+    # Alternatively, if you want to distribute just a my_module.py, uncomment
+    # this:
+    #   py_modules=["my_module"],
+
+    # List run-time dependencies here.  These will be installed by pip when
+    # your project is installed. For an analysis of "install_requires" vs pip's
+    # requirements files see:
+    # https://packaging.python.org/en/latest/requirements.html
+    install_requires=['numpy', 'sklearn', 'scipy'],
 )
 
