@@ -14,8 +14,7 @@ this test from competition:
 
 * It is fast. Worst-case speed scales as O(n_data * log(n_data) * dim), where dim is max(x_dim + z_dim, y_dim). However, amortized speed is O(n_data * log(n_data) * log(dim)).
 
-* It applies to cases where some of x, y, z are continuous and some are discrete,
-or categorical (one-hot-encoded).
+* It applies to cases where some of x, y, z are continuous and some are discrete, or categorical (one-hot-encoded).
 
 * It is very simple to understand and modify.
 
