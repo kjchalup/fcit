@@ -41,6 +41,8 @@ Here, we created discrete variables *x* and *y*, d-separated by a "common cause"
 *z*. The null hypothesis is that *x* is independent of *y* given *z*. Since in this 
 case the variables are independent given *z*, pval should be distributed uniformly on [0, 1].
 
+Note that x.shape = (n_samples, x_dim), y.shape = (n_samples, y_dim), z.shape = (n_samples, z_dim).
+
 
 Installation
 -----------
