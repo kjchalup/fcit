@@ -22,19 +22,19 @@ We have applied this test to tens of thousands of samples of thousand-dimensiona
 
 Usage
 -----
- Basic usage is simple:
+Basic usage is simple:
  
 .. code:: python 
-    import numpy as np
-    import dtit
-    # Generate some data such that x is indpendent of y given z.
-    n_samples = 300
-    z = np.random.dirichlet(alpha=np.ones(2), size=n_samples)
-    x = np.vstack([np.random.multinomial(20, p) for p in z])
-    y = np.vstack([np.random.multinomial(20, p) for p in z])
-    
-    # Run the conditional independence test.
-    pval = dtit.test(x, y, z)
+  import numpy as np
+  import dtit
+  # Generate some data such that x is indpendent of y given z.
+  n_samples = 300
+  z = np.random.dirichlet(alpha=np.ones(2), size=n_samples)
+  x = np.vstack([np.random.multinomial(20, p) for p in z])
+  y = np.vstack([np.random.multinomial(20, p) for p in z])
+  
+  # Run the conditional independence test.
+  pval = dtit.test(x, y, z)
 
 Here, we created discrete variables *x* and *y*, d-separated by a "common cause"
 *z*. The null hypothesis is that *x* is independent of *y* given *z*. Since in this 
