@@ -22,8 +22,8 @@ We have applied this test to tens of thousands of samples of thousand-dimensiona
 
 Usage
 -----
-Basic usage is simple:
-
+ Basic usage is simple:
+ 
 .. code:: python 
     import numpy as np
     import dtit
