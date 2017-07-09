@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-      url = 'https://github.com/kjchalup/dtit',
+    url = 'https://github.com/kjchalup/dtit',
 
     # Author details
     author = 'Krzysztof Chalupka',
