@@ -24,7 +24,8 @@ Usage
 -----
 Basic usage is simple:
  
-.. code:: python 
+.. code:: python
+
   import numpy as np
   import dtit
   # Generate some data such that x is indpendent of y given z.
