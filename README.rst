@@ -27,7 +27,7 @@ Basic usage is simple:
 .. code:: python
 
   import numpy as np
-  import dtit
+  from dtit import dtit
   # Generate some data such that x is indpendent of y given z.
   n_samples = 300
   z = np.random.dirichlet(alpha=np.ones(2), size=n_samples)
@@ -41,9 +41,15 @@ Here, we created discrete variables *x* and *y*, d-separated by a "common cause"
 *z*. The null hypothesis is that *x* is independent of *y* given *z*. Since in this 
 case the variables are independent given *z*, pval should be distributed uniformly on [0, 1].
 
+
+Installation
+-----------
+pip install dtit
+
+
 Requirements
 ------------
-To use the nn methods:
+The usual scientific Python packages:
     * numpy >= 1.12
     * scikit-learn >= 0.18.1
     * scipy >= 0.16.1
