@@ -6,8 +6,6 @@ Chalupka, Krzysztof and Perona, Pietro and Eberhardt, Frederick, 2017.
 import os
 import numpy as np
 from scipy.stats import ttest_1samp
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error as mse
 
@@ -43,10 +41,7 @@ def test(x, y, z=None, num_perm=10, prop_test=.1,
     elif x.shape[1] < y.shape[1]:
         x, y = y, x
 
-    x = StandardScaler().fit_transform(x)
-    y = StandardScaler().fit_transform(y)
-    if z is not None:
-        z = StandardScaler().fit_transform(z)
+    y /= y.flatten().std()
 
     # Use this many datapoints as a test set.
     n_samples = x.shape[0]
