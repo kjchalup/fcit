@@ -6,6 +6,8 @@ Chalupka, Krzysztof and Perona, Pietro and Eberhardt, Frederick, 2017.
 import os
 import numpy as np
 from scipy.stats import ttest_1samp
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.metrics import mean_squared_error as mse
 
@@ -19,7 +21,8 @@ def test(x, y, z=None, num_perm=10, prop_test=.1,
     Args:
         x (n_samples, x_dim): First variable.
         y (n_samples, y_dim): Second variable.
-        z (n_samples, z_dim): Conditioning variable.
+        z (n_samples, z_dim): Conditioning variable. If z==None (default),
+            then performs an unconditional independence test.
         num_perm: Number of data permutations to estimate
             the p-value from marginal stats.
         prop_test (int): Proportion of data to evaluate test stat on.
@@ -40,26 +43,37 @@ def test(x, y, z=None, num_perm=10, prop_test=.1,
     elif x.shape[1] < y.shape[1]:
         x, y = y, x
 
+    x = StandardScaler().fit_transform(x)
+    y = StandardScaler().fit_transform(y)
+    if z is not None:
+        z = StandardScaler().fit_transform(z)
+
     # Use this many datapoints as a test set.
     n_samples = x.shape[0]
     n_test = int(n_samples * prop_test)
 
     # Attach the conditioning variable to the input.
-    x_z = np.hstack([x, z])
+    if z is not None:
+        x_z = np.hstack([x, z])
+    else:
+        x_z = x
+    xz_dim = x_z.shape[1]
 
     # Set up storage for true data and permuted data MSEs.
     d0_stats = np.zeros(num_perm)
     d1_stats = np.zeros(num_perm)
-
-    # Construct the decision tree.
-    dim = x_z.shape[1]
-    clf = DecisionTreeRegressor(max_features='log2' if dim > 10 else None)
+    
+    # Create a regressor that scales logarithmically in xz_dim.
+    clf = DecisionTreeRegressor(max_features='log2' if xz_dim > 10 else None)
     
     for perm_id in range(num_perm):
         # Estimate MSE with permuted X.
         data_permutation = np.random.permutation(n_samples)
         perm_ids = np.random.permutation(n_samples)
-        x_z_bootstrap = np.hstack([x[perm_ids], z])
+        if z is not None:
+            x_z_bootstrap = np.hstack([x[perm_ids], z])
+        else:
+            x_z_bootstrap = x[perm_ids]
         clf.fit(x_z_bootstrap[data_permutation][n_test:],
                 y[data_permutation][n_test:])
         d0_stats[perm_id] = mse(y[data_permutation][:n_test],
