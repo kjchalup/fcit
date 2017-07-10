@@ -18,16 +18,32 @@ this test from competition:
 
 * It is very simple to understand and modify.
 
+* It can be used for unconditional independence testing with almost no changes to the procedure.
+
 We have applied this test to tens of thousands of samples of thousand-dimensional datapoints in seconds. For smaller dimensionalities and sample sizes, it takes a fraction of a second. The algorithm is described in [arXiv link coming], where we also provide detailed experimental results and comparison with other methods. However for now, you should be able to just look through the code to understand what's going on -- it's only 90 lines of Python, including detailed comments!
 
 Usage
 -----
-Basic usage is simple, and the default settings should work in most cases:
+Basic usage is simple, and the default settings should work in most cases. To perform an *unconditional test*, use dtit.test(x, y):
+
+.. code:: python
+
+  import numpy as np
+  from dtit import dtit
+  
+  x = np.random.rand(1000, 1)
+  y = np.random.randn(1000, 1)
+  
+  pval_i = dtit.test(x, y) # p-value should be uniform on [0, 1].
+  pval_d = dtit.test(x, x + y) # p-value should be very small.
+  
+To perform a conditional test, just add the third variable z to the inputs:
  
 .. code:: python
 
   import numpy as np
   from dtit import dtit
+  
   # Generate some data such that x is indpendent of y given z.
   n_samples = 300
   z = np.random.dirichlet(alpha=np.ones(2), size=n_samples)
@@ -36,10 +52,6 @@ Basic usage is simple, and the default settings should work in most cases:
   
   # Run the conditional independence test.
   pval = dtit.test(x, y, z)
-
-Here, we created discrete variables *x* and *y*, d-separated by a "common cause"
-*z*. The null hypothesis is that *x* is independent of *y* given *z*. Since in this 
-case the variables are independent given *z*, pval should be distributed uniformly on [0, 1].
 
 Note that x.shape = (n_samples, x_dim), y.shape = (n_samples, y_dim), z.shape = (n_samples, z_dim).
 
