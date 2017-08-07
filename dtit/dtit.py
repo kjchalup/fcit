@@ -64,15 +64,15 @@ def test(x, y, z=None, num_perm=10, prop_test=.1,
     for perm_id in range(num_perm):
         # Estimate MSE with permuted X.
         data_permutation = np.random.permutation(n_samples)
-        perm_ids = np.random.permutation(n_samples)
+        shuffle_ids = np.random.permutation(n_samples)
         if z is not None:
-            x_z_bootstrap = np.hstack([x[perm_ids], z])
+            x_z_shuffle = np.hstack([x[shuffle_ids], z])
         else:
-            x_z_bootstrap = x[perm_ids]
-        clf.fit(x_z_bootstrap[data_permutation][n_test:],
+            x_z_shuffle = x[shuffle_ids]
+        clf.fit(x_z_shuffle[data_permutation][n_test:],
                 y[data_permutation][n_test:])
         d0_stats[perm_id] = mse(y[data_permutation][:n_test],
-            clf.predict(x_z_bootstrap[data_permutation][:n_test]))
+            clf.predict(x_z_shuffle[data_permutation][:n_test]))
 
         # Estimate the MSE with original X.
         clf.fit(x_z[data_permutation][n_test:], y[data_permutation][n_test:])
