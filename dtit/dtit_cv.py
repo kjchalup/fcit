@@ -161,8 +161,9 @@ def test(x, y, z=None, num_perm=8, prop_test=.1,
 
     # Compute mses for y = f(x, reshuffle(z)), varying train-test splits.
     datadict['reshuffle'] = True
-    #datadict['x'] = np.empty([x.shape[0], 0])
-    clf = cv_besttree(x[np.random.permutation(n_samples)],#np.empty([x.shape[0], 0]),
+    datadict['x'] = np.empty([x.shape[0], 0])
+    #clf = cv_besttree(x[np.random.permutation(n_samples)],#np.empty([x.shape[0], 0]),
+    clf = cv_besttree(np.empty([x.shape[0], 0]),
         y, z, cv_grid, logdim, verbose, prop_test=prop_test)
     d0_stats = np.array(joblib.Parallel(n_jobs=-1, max_nbytes=100e6)(
         joblib.delayed(obtain_error)((datadict, i)) for i in range(num_perm)))
