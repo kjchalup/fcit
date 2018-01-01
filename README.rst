@@ -64,6 +64,7 @@ Requirements
 ------------
 Tested with Python 3.6 and
 
+    * joblib >= 0.11
     * numpy >= 1.12
     * scikit-learn >= 0.18.1
     * scipy >= 0.16.1
