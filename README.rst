@@ -2,7 +2,7 @@
     :target: https://opensource.org/licenses/MIT
     :alt: License
 
-*A Decision Tree (Conditional) Independence Test (DTIT).*
+*A Fast Conditional Independence Test (FCIT).*
 
 Introduction
 -----------
@@ -29,20 +29,20 @@ Basic usage is simple, and the default settings should work in most cases. To pe
 .. code:: python
 
   import numpy as np
-  from dtit import dtit
+  from fcit import fcit
   
   x = np.random.rand(1000, 1)
   y = np.random.randn(1000, 1)
   
-  pval_i = dtit.test(x, y) # p-value should be uniform on [0, 1].
-  pval_d = dtit.test(x, x + y) # p-value should be very small.
+  pval_i = fcit.test(x, y) # p-value should be uniform on [0, 1].
+  pval_d = fcit.test(x, x + y) # p-value should be very small.
   
 To perform a conditional test, just add the third variable z to the inputs:
  
 .. code:: python
 
   import numpy as np
-  from dtit import dtit
+  from fcit import fcit
   
   # Generate some data such that x is indpendent of y given z.
   n_samples = 1000
@@ -51,13 +51,13 @@ To perform a conditional test, just add the third variable z to the inputs:
   y = np.vstack([np.random.multinomial(20, p) for p in z]).astype(float)
   
   # Check that x and y are dependent (p-value should be uniform on [0, 1]).
-  pval_d = dtit.test(x, y)
+  pval_d = fcit.test(x, y)
   # Check that z d-separates x and y (the p-value should be small).
-  pval_i = dtit.test(x, y, z)
+  pval_i = fcit.test(x, y, z)
 
 Installation
 -----------
-pip install dtit
+pip install fcit
 
 
 Requirements
