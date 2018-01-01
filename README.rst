@@ -45,16 +45,15 @@ To perform a conditional test, just add the third variable z to the inputs:
   from dtit import dtit
   
   # Generate some data such that x is indpendent of y given z.
-  n_samples = 300
+  n_samples = 1000
   z = np.random.dirichlet(alpha=np.ones(2), size=n_samples)
-  x = np.vstack([np.random.multinomial(20, p) for p in z])
-  y = np.vstack([np.random.multinomial(20, p) for p in z])
+  x = np.vstack([np.random.multinomial(20, p) for p in z]).astype(float)
+  y = np.vstack([np.random.multinomial(20, p) for p in z]).astype(float)
   
-  # Run the conditional independence test.
-  pval = dtit.test(x, y, z)
-
-Note that x.shape = (n_samples, x_dim), y.shape = (n_samples, y_dim), z.shape = (n_samples, z_dim).
-
+  # Check that x and y are dependent (p-value should be uniform on [0, 1]).
+  pval_d = dtit.test(x, y)
+  # Check that z d-separates x and y (the p-value should be small).
+  pval_i = dtit.test(x, y, z)
 
 Installation
 -----------
@@ -63,7 +62,8 @@ pip install dtit
 
 Requirements
 ------------
-The usual scientific Python packages:
+Tested with Python 3.6 and
+
     * numpy >= 1.12
     * scikit-learn >= 0.18.1
     * scipy >= 0.16.1
