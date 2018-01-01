@@ -1,4 +1,4 @@
-""" A parallelized conditional independence test.
+""" A fast conditional independence test.
 
 This implementation uses the joblib library to parallelize test
 statistic computation over all available cores. By default, num_perm=8
@@ -80,8 +80,7 @@ def cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test):
 
 def obtain_error(data_and_i):
     """ 
-    A function used for multithreaded computation of the dtit test
-    statistic (compare with the non-parallel dtit.py implementation).
+    A function used for multithreaded computation of the fcit test statistic.
     data['x']: First variable.
     data['y']: Second variable.
     data['z']: Conditioning variable.
@@ -112,7 +111,7 @@ def obtain_error(data_and_i):
 def test(x, y, z=None, num_perm=8, prop_test=.1,
     discrete=(False, False), plot_return=False, verbose=False,
     logdim=False, cv_grid=[2, 8, 64, 512, 1e-2, .2, .4], **kwargs):
-    """ The neural net probabilistic independence test.
+    """ Fast conditional independence test, based on decision-tree regression.
 
     See Chalupka, Perona, Eberhardt 2017 [arXiv link coming].
 

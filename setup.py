@@ -10,22 +10,22 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 
 
 setup(
-    name='dtit',
+    name='fcit',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.1.0',
+    version='1.2.0',
 
     description='A decision-tree based conditional independence test',
     long_description=long_description,
 
     # The project's main homepage.
-    url = 'https://github.com/kjchalup/dtit',
+    url = 'https://github.com/kjchalup/fcit',
 
     # Author details
     author = 'Krzysztof Chalupka',
-    author_email = 'kjchalup@caltech.edu',
+    author_email = 'janchatko@gmail.com',
 
     # Choose your license
     license='MIT',
@@ -71,6 +71,6 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['numpy', 'sklearn', 'scipy'],
+    install_requires=['numpy', 'sklearn', 'scipy', 'joblib'],
 )
 
