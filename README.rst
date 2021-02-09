@@ -24,7 +24,7 @@ We have applied this test to tens of thousands of samples of thousand-dimensiona
 
 Usage
 -----
-Basic usage is simple, and the default settings should work in most cases. To perform an *unconditional test*, use dtit.test(x, y):
+Basic usage is simple, and the default settings should work in most cases. To perform an *unconditional test*, use fcit.test(x, y):
 
 .. code:: python
 
