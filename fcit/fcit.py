@@ -60,8 +60,8 @@ def cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test, random_state):
     Returns:
         DecisionTreeRegressor with the best hyperparameter setting.
     """
-    # Different from the original implementation, we always want to use all the features
-    max_features = None
+    xz_dim = x.shape[1] + z.shape[1]
+    max_features='log2' if (logdim and xz_dim > 10) else None
     if cv_grid is None:
         min_samples_split = 2
     elif len(cv_grid) == 1:
