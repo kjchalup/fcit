@@ -33,10 +33,8 @@ def interleave(x, z, seed=None):
         An array of shape (n_samples, x_dim + z_dim) in which
             the columns of x and z are interleaved at random.
     """
-    state = np.random.get_state()
-    np.random.seed(seed or int(time.time()))
-    total_ids = np.random.permutation(x.shape[1]+z.shape[1])
-    np.random.set_state(state)
+    rnd = np.random.RandomState(seed)
+    total_ids = rnd.permutation(x.shape[1]+z.shape[1])
     out = np.zeros([x.shape[0], x.shape[1] + z.shape[1]])
     out[:, total_ids[:x.shape[1]]] = x
     out[:, total_ids[x.shape[1]:]] = z
