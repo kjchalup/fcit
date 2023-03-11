@@ -40,7 +40,7 @@ def interleave(x, z, seed=None):
     out[:, total_ids[x.shape[1]:]] = z
     return out
 
-def cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test, random_state):
+def cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test, random_state, n_jobs):
     """ Choose the best decision tree hyperparameters by
     cross-validation. The hyperparameter to optimize is min_samples_split
     (see sklearn's DecisionTreeRegressor).
@@ -54,6 +54,7 @@ def cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test, random_state):
         verbose (bool): If True, print out extra info.
         prop_test (float): Proportion of validation data to use.
         random_state (int): Random seed.
+        n_jobs (int): Number of threads to use for parallel computation.
 
     Returns:
         DecisionTreeRegressor with the best hyperparameter setting.
@@ -68,7 +69,7 @@ def cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test, random_state):
         clf = DecisionTreeRegressor(max_features=max_features, random_state=random_state)
         splitter = ShuffleSplit(n_splits=3, test_size=prop_test, random_state=random_state)
         cv = GridSearchCV(estimator=clf, cv=splitter,
-            param_grid={'min_samples_split': cv_grid}, n_jobs=-1)
+            param_grid={'min_samples_split': cv_grid}, n_jobs=n_jobs)
         cv.fit(interleave(x, z, seed=random_state), y)
         min_samples_split = cv.best_params_['min_samples_split']
     if verbose:
@@ -109,7 +110,7 @@ def obtain_error(data_and_i):
 
 def test(x, y, z=None, num_perm=8, prop_test=.1,
     discrete=(False, False), plot_return=False, verbose=False,
-    logdim=False, cv_grid=[2, 8, 64, 512, 1e-2, .2, .4], random_state=None, **kwargs):
+    logdim=False, cv_grid=[2, 8, 64, 512, 1e-2, .2, .4], random_state=None, n_jobs=-1, **kwargs):
     """ Fast conditional independence test, based on decision-tree regression.
 
     See Chalupka, Perona, Eberhardt 2017 [arXiv link coming].
@@ -129,6 +130,7 @@ def test(x, y, z=None, num_perm=8, prop_test=.1,
         cv_grid (list): min_impurity_splits to cross-validate when training
             the decision tree regressor.
         random_state (int): Seed for random number generator.
+        n_jobs (int): Number of threads to use for parallel computation.
 
     Returns:
         p (float): The p-value for the null hypothesis
@@ -170,7 +172,7 @@ def test(x, y, z=None, num_perm=8, prop_test=.1,
             'reshuffle': False,
             'clf': clf,
             }
-    d1_stats = np.array(joblib.Parallel(n_jobs=-1, max_nbytes=100e6)(
+    d1_stats = np.array(joblib.Parallel(n_jobs=n_jobs, max_nbytes=100e6)(
         joblib.delayed(obtain_error)((datadict, i, random)) for i in range(num_perm)))
 
     # Compute mses for y = f(x, reshuffle(z)), varying train-test splits.
@@ -182,7 +184,7 @@ def test(x, y, z=None, num_perm=8, prop_test=.1,
                       verbose, prop_test=prop_test, random_state=random_state)
     datadict['reshuffle'] = True
     datadict['x'] = x_indep_y
-    d0_stats = np.array(joblib.Parallel(n_jobs=-1, max_nbytes=100e6)(
+    d0_stats = np.array(joblib.Parallel(n_jobs=n_jobs, max_nbytes=100e6)(
         joblib.delayed(obtain_error)((datadict, i, random)) for i in range(num_perm)))
 
     if verbose:
