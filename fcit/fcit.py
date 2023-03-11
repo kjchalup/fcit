@@ -162,7 +162,7 @@ def test(x, y, z=None, num_perm=8, prop_test=.1,
         random.permutation(n_samples) for i in range(num_perm)]
 
     # Compute mses for y = f(x, z), varying train-test splits.
-    clf = cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test=prop_test, random_state=random_state)
+    clf = cv_besttree(x, y, z, cv_grid, logdim, verbose, prop_test=prop_test, random_state=random_state, n_jobs=n_jobs)
     datadict = {
             'x': x,
             'y': y,
@@ -181,7 +181,7 @@ def test(x, y, z=None, num_perm=8, prop_test=.1,
     else:
         x_indep_y = np.empty([x.shape[0], 0])
     clf = cv_besttree(x_indep_y, y, z, cv_grid, logdim,
-                      verbose, prop_test=prop_test, random_state=random_state)
+                      verbose, prop_test=prop_test, random_state=random_state, n_jobs=n_jobs)
     datadict['reshuffle'] = True
     datadict['x'] = x_indep_y
     d0_stats = np.array(joblib.Parallel(n_jobs=n_jobs, max_nbytes=100e6)(
